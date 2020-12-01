@@ -1,0 +1,4 @@
+*.class
+.manifest.mf
+bin
+.project
