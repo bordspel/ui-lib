@@ -1,16 +1,17 @@
 package bordspel.library.element.event;
 
-import org.python.core.PyByteArray;
+import org.python.core.Py;
+import org.python.core.PyString;
 
 public class KeyEvent {
 
 	public String type;
-	public PyByteArray key;
+	public PyString key;
 	public int keyCode;
 	
-	public KeyEvent(String type, char key, int keyCode) {
+	public KeyEvent(String type, String key, int keyCode) {
 		this.type = type;
-		this.key = new PyByteArray(key);
+		this.key = Py.newStringOrUnicode(key);
 		this.keyCode = keyCode;
 	}
 	
@@ -18,7 +19,7 @@ public class KeyEvent {
 		return this.type;
 	}
 	
-	public PyByteArray getKey() {
+	public PyString getKey() {
 		return this.key;
 	}
 	

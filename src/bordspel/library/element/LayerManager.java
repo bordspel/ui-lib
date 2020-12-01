@@ -111,7 +111,7 @@ public class LayerManager {
 			if (e.getAction() == KeyEvent.TYPE)
 				type = "TYPE";
 			
-			char key = e.getKey();
+			String key = String.valueOf(e.getKey());
 			int keyCode = e.getKeyCode();
 			
 			if (type == "PRESS") {
