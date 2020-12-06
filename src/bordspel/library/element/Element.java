@@ -15,6 +15,10 @@ public class Element implements IElement {
 	public int y;
 	
 	public boolean hidden = false;
+	public boolean focused = false;
+	public boolean hovering = false;
+	
+	public Bound bound;
 	
 	protected CopyOnWriteArrayList<PyObject> drawHandlers = new CopyOnWriteArrayList<>();
 	protected CopyOnWriteArrayList<PyObject> keyHandlers = new CopyOnWriteArrayList<>();
@@ -51,6 +55,26 @@ public class Element implements IElement {
 	
 	public int getY() {
 		return this.y;
+	}
+	
+	public boolean hasBound() {
+		return this.bound != null;
+	}
+	
+	public Bound getBound() {
+		return this.bound;
+	}
+	
+	public void createBound() {
+		this.bound = new Bound();
+	}
+	
+	public void addBoundLocation(int x, int y) {
+		this.bound.addLocation(x, y);
+	}
+	
+	public boolean isInBound(int x, int y) {
+		return this.bound.isInBound(x, y);
 	}
 	
 	/*
@@ -116,6 +140,22 @@ public class Element implements IElement {
 	
 	public void _callMouse(MouseEvent e) {
 		Object[] oj = {e};
+		
+		if (this.hasBound()) {
+			if (this.bound.isInBound(e.x, e.y)) {
+				if (e.type == "CLICK")
+					this.focused = true;
+				if (e.type == "MOVE")
+					this.hovering = true;
+			} else {
+				if (e.type == "CLICK")
+					this.focused = false;
+				if (e.type == "MOVE")
+					this.hovering = false;
+				
+				return;
+			}
+		}
 		
 		Iterator<PyObject> iter = this.mouseHandlers.iterator();
 		while(iter.hasNext()) {

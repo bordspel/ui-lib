@@ -1,5 +1,6 @@
 package bordspel.library.element;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,6 +15,8 @@ public class LayerManager {
 	private CopyOnWriteArrayList<Layer> layers = new CopyOnWriteArrayList<>();
 	
 	private Layer activeLayer;
+	
+	public ArrayList<String> activeCursors = new ArrayList<>();
 	
 	public LayerManager(PApplet sketch) {
 		this.sketch = sketch;
@@ -46,7 +49,7 @@ public class LayerManager {
 	}
 	
 	public Layer createLayer(String name) {
-		Layer layer = new Layer(this.getSketch(), name);
+		Layer layer = new Layer(this, this.getSketch(), name);
 		this.layers.add(layer);
 		return layer;
 	}
@@ -90,6 +93,9 @@ public class LayerManager {
 	 */
 	public void draw() {
 		this.getSketch().background(255);
+		
+		if (this.activeCursors.size() == 0)
+			this.getSketch().cursor(PConstants.ARROW);
 		
 		if (this.hasActiveLayer()) {
 			for (Element element : this.activeLayer.getElements()) {

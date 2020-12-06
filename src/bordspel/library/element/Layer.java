@@ -10,15 +10,22 @@ public class Layer {
 	public String name;
 	public boolean keyPressed;
 	
+	private LayerManager layerManager;
+	
 	private CopyOnWriteArrayList<Element> elements = new CopyOnWriteArrayList<>();
 	
-	protected Layer(PApplet sketch, String name) {
+	protected Layer(LayerManager layerManager, PApplet sketch, String name) {
+		this.layerManager = layerManager;
 		this.sketch = sketch;
 		this.name = name;
 	}
 	
 	public PApplet getSketch() {
 		return this.sketch;
+	}
+	
+	public LayerManager getLayerManager() {
+		return this.layerManager;
 	}
 	
 	public String getName() {

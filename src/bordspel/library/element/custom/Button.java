@@ -1,5 +1,7 @@
 package bordspel.library.element.custom;
 
+import org.python.core.PyTuple;
+
 import bordspel.library.element.Element;
 import bordspel.library.element.IElement;
 import bordspel.library.element.Layer;
@@ -10,37 +12,60 @@ import processing.core.PConstants;
 
 public class Button extends Element implements IElement {
 
-	private String text;
-	private int textSize = 18;
-	private int color = 0;
+	private int w;
+	private int h;
 	
-	public Button(String id, int x, int y, String text) {
+	private PyTuple normalColor;
+	private PyTuple highlightColor;
+	
+	public Button(String id, int x, int y, int w, int h, PyTuple normalColor, PyTuple highlightColor) {
 		super(id, x, y);
 		
-		this.text = text;
+		this.w = w;
+		this.h = h;
+		
+		this.normalColor = normalColor;
+		this.highlightColor = highlightColor;
+		
+		this.createBound();
+		this.addBoundLocation(x, y);
+		this.addBoundLocation(x + w, y);
+		this.addBoundLocation(x, y + h);
+		this.addBoundLocation(x + w, y + h);
 	}
 	
-	public void setText(String text) {
-		this.text = text;
+	public void setNormalColor(PyTuple normalColor) {
+		this.normalColor = normalColor;
 	}
 	
-	public void setTextSize(int textSize) {
-		this.textSize = textSize;
-	}
-	
-	public void setColor(int color) {
-		this.color = color;
+	public void setHighlightColor(PyTuple highlightColor) {
+		this.highlightColor = highlightColor;
 	}
 
 	@Override
 	public void _draw(Layer layer) {
 		PApplet sketch = layer.getSketch();
 		
-		sketch.textSize(this.textSize);
-		sketch.textAlign(PConstants.CENTER, PConstants.CENTER);
+		// Check if the mouse is hovering over the button.
+		if (this.hovering) {
+			if (!layer.getLayerManager().activeCursors.contains(this.toString()))
+				layer.getLayerManager().activeCursors.add(this.toString());
+			sketch.cursor(PConstants.HAND);
+			
+			sketch.fill((int)this.highlightColor.get(0), 
+						(int)this.highlightColor.get(1),
+						(int)this.highlightColor.get(2));
+		} else {
+			if (layer.getLayerManager().activeCursors.contains(this.toString()))
+				layer.getLayerManager().activeCursors.remove(this.toString());
+			
+			sketch.fill((int)this.normalColor.get(0), 
+					(int)this.normalColor.get(1),
+					(int)this.normalColor.get(2));
+		}
 		
-		sketch.fill(this.color);
-		sketch.text(this.text, this.x, this.y);
+		sketch.noStroke();
+		sketch.rect(this.x, this.y, this.w, this.h);
 	}
 
 	@Override
