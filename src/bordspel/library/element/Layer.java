@@ -58,6 +58,12 @@ public class Layer {
 		return e;
 	}
 	
+	public Element createElement(String id) {
+		Element e = new Element(id);
+		this.elements.add(e);
+		return e;
+	}
+	
 	public void addElement(Element element) {
 		this.elements.add(element);
 	}

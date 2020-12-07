@@ -11,8 +11,8 @@ import bordspel.library.element.event.MouseEvent;
 public class Element implements IElement {
 	
 	public String id;
-	public int x;
-	public int y;
+	public float x;
+	public float y;
 	
 	public boolean hidden = false;
 	public boolean focused = false;
@@ -24,10 +24,14 @@ public class Element implements IElement {
 	protected CopyOnWriteArrayList<PyObject> keyHandlers = new CopyOnWriteArrayList<>();
 	protected CopyOnWriteArrayList<PyObject> mouseHandlers = new CopyOnWriteArrayList<>();
 	
-	protected Element(String id, int x, int y) {
+	protected Element(String id, float x, float y) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
+	}
+	
+	protected Element(String id) {
+		this.id = id;
 	}
 	
 	/*
@@ -49,11 +53,11 @@ public class Element implements IElement {
 		this.hidden = false;
 	}
 	
-	public int getX() {
+	public float getX() {
 		return this.x;		
 	}
 	
-	public int getY() {
+	public float getY() {
 		return this.y;
 	}
 	
